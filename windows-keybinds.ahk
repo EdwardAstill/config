@@ -10,3 +10,12 @@
 {
     Run("wezterm-gui.exe")
 }
+
+; Ensure the script can see all windows
+SetTitleMatchMode(2)
+
+; Map Win + Shift + Q to act exactly like Alt + F4
++#q::
+{
+    Send("!{F4}")
+}
