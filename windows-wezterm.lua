@@ -1,42 +1,40 @@
 local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 
+-- [ 1. SHELL CONFIG ]
 config.default_prog = { 'powershell.exe', '-NoLogo' }
 
+-- [ 2. APPEARANCE & COLORS ]
 config.colors = {
-  background = "#FFFCF0", -- Your Paper background
-  foreground = "#100F0F", -- High-contrast text
-  cursor_bg  = "#949494", -- Your Dark Blue typing indicator
-  cursor_fg  = "#FFFCF0",
-  selection_bg = "#E6E2CC", -- Subdued tan for highlights
+  background = "#FFFCF0", 
+  foreground = "#100F0F", 
+  cursor_bg   = "#949494", 
+  cursor_fg   = "#FFFCF0",
+  selection_bg = "#E6E2CC", 
   selection_fg = "#100F0F",
-
-  -- ANSI Colors: These affect folders, git branches, and CLI tools
-  ansi = {
-    "#100F0F", -- black
-    "#AF3029", -- red (Brick)
-    "#66800B", -- green (Moss)
-    "#AD8301", -- yellow (Ochre)
-    "#205EA6", -- blue (Steel)
-    "#A02F6F", -- magenta (Plum)
-    "#24837B", -- cyan (Teal)
-    "#CECDC3", -- white
-  },
-  brights = {
-    "#878580", -- bright black
-    "#D14D41", -- bright red
-    "#879A39", -- bright green
-    "#D0A215", -- bright yellow
-    "#4385BE", -- bright blue
-    "#CE5D97", -- bright magenta
-    "#3AA99F", -- bright cyan
-    "#FFFCF0", -- bright white
-  },
+  ansi = { "#100F0F", "#AF3029", "#66800B", "#AD8301", "#205EA6", "#A02F6F", "#24837B", "#CECDC3" },
+  brights = { "#878580", "#D14D41", "#879A39", "#D0A215", "#4385BE", "#CE5D97", "#3AA99F", "#FFFCF0" },
 }
 
-config.window_background_opacity = 1.0 
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
-config.use_fancy_tab_bar = false
+config.window_close_confirmation = 'NeverPrompt'
+config.window_padding = { left = 15, right = 15, top = 15, bottom = 15 }
+
+-- [ 3. WINDOW SIZING & POSITIONING ]
+config.initial_cols = 120
+config.initial_rows = 30
+config.prefer_to_spawn_tabs = false
+
+wezterm.on('gui-startup', function(spawn_args)
+  -- We must use 'spawn_args' here to ensure the "y" command 
+  -- from your AHK script actually gets executed.
+  local tab, pane, window = wezterm.mux.spawn_window(spawn_args or {
+    position = { x = 350, y = 150 },
+  })
+  
+  -- This forces the specific position for the window we just created
+  window:gui_window():set_position(350, 150)
+end)
 
 return config
