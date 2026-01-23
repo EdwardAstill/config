@@ -2,7 +2,7 @@
 #SingleInstance Force  ; Prevents "Already running" popups
 #y:: 
 {
-    Run('wezterm-gui.exe start -- powershell -NoLogo -Command "y"')
+    Run('wezterm-gui.exe start -- powershell -NoLogo -NoExit -Command "y"')
 }
 
 #Enter::
